@@ -12,8 +12,8 @@ int brd[NUM];
 void Splash(void) {
   
   puts("Mancala Game");
-  puts("Player1|*|1|2|3|4|5|6|*|");
-  puts("Player2|*|6|5|4|3|2|1|*|");
+  puts("Player1|*|6|5|4|3|2|1|*|");
+  puts("Player2|*|1|2|3|4|5|6|*|");
   puts("");
   
   return;
@@ -68,6 +68,8 @@ int SetBoard(void) {
 void ShowBoard(void) {
     int i;
 
+    printf("P1   -6--5--4--3--2--1-->\n");
+
     printf("   | ");    
     // プレイヤ1のボード表示
     for (i = 1; i < NUM / 2; i++) {
@@ -83,7 +85,8 @@ void ShowBoard(void) {
     for (i = NUM - 1; i > NUM / 2; i--) {
         printf("%2d ", brd[i]);
     }
-    printf(" |\n\n");
+    printf(" |\n");
+    printf("P2  <-1--2--3--4--5--6--\n\n");
 
     return;
 }
@@ -138,7 +141,9 @@ int Hand(int turn) {
 
         if (p >= 1 && p < NUM / 2) {
             if (turn == -1) {
-                p += NUM / 2;
+                p = NUM - p;
+            } else {
+                p = NUM / 2 - p;
             }
             if (brd[p] > 0) {
                 break;
