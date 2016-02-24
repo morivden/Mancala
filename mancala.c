@@ -2,12 +2,22 @@
 #include <stdlib.h>
 
 #define NUM 14
-#define STONE 3
 #define SIZE 256
 
 // ボードの宣言
 int brd[NUM] = {0, 3, 3, 3, 3, 3, 3,
                 0, 3, 3, 3, 3, 3, 3};
+
+//==== スプラッシュ画面表示関数
+void Splash(void) {
+  
+  puts("Mancala Game");
+  puts("Player1|*|1|2|3|4|5|6|*|");
+  puts("Player2|*|6|5|4|3|2|1|*|");
+  puts("");
+  
+  return;
+}
 
 //==== ボートの初期設定関数
 int SetBoard(void) {
@@ -43,24 +53,22 @@ int SetBoard(void) {
 void ShowBoard(void) {
     int i;
 
-    printf("%d ", brd[0]);
-
+    printf("   | ");    
     // プレイヤ1のボード表示
     for (i = 1; i < NUM / 2; i++) {
-        printf("%d ", brd[i]);
+        printf("%2d ", brd[i]);
     }
+    printf(" |\n");
 
     // 大きい穴の表示
-    printf("%d\n", brd[NUM / 2]);
-    printf("%d ", brd[0]);
+    printf("%2d |                    | %2d\n", brd[0], brd[NUM / 2]);
 
     // プレイヤ2の表示
+    printf("   | ");
     for (i = NUM - 1; i > NUM / 2; i--) {
-        printf("%d ", brd[i]);
+        printf("%2d ", brd[i]);
     }
-
-    // 大きい穴の表示
-    printf("%d\n\n", brd[NUM / 2]);
+    printf(" |\n\n");
 
     return;
 }
@@ -84,11 +92,11 @@ int WinLose(void) {
 
     // 勝敗の判定と結果出力
     if (s1 == 0) {
-        puts("player1 Win!");
+        puts("Player1 Win!");
         
         return 1;
     }  else if (s2 == 0) {
-        puts("player2 Win!");
+        puts("Player2 Win!");
         
         return -1;
     } else {
@@ -177,6 +185,9 @@ int main(void)
     // 変数宣言
     int turn = 1;    // ターンの初期設定
 
+    // スプラッシュ画面の表示
+    Splash();
+    
     if (SetBoard()) {
         
         ShowBoard();
