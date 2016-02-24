@@ -3,10 +3,10 @@
 
 #define NUM 14
 #define SIZE 256
+#define DATA "board.txt"
 
 // ボードの宣言
-int brd[NUM] = {0, 3, 3, 3, 3, 3, 3,
-                0, 3, 3, 3, 3, 3, 3};
+int brd[NUM];
 
 //==== スプラッシュ画面表示関数
 void Splash(void) {
@@ -21,11 +21,26 @@ void Splash(void) {
 
 //==== ボートの初期設定関数
 int SetBoard(void) {
-    int i;
+    int i = 0;
     int s1 = 0;
     int s2 = 0;
     int flag = 0;
 
+    FILE *fp;
+
+    fp = fopen(DATA, "r");
+
+    if (fp == NULL) {
+        puts("Error!! : Data is empty!!");
+        return 1;
+    } else {
+        while (fscanf(fp, "%d", &brd[i]) == 1) {
+            i++;
+        }
+    }
+
+    fclose(fp);
+    
     for (i = 1; i < NUM / 2; i++) {
         if (brd[i] < 0) {
             flag = -1;
@@ -163,7 +178,7 @@ int Sowing(int turn) {
     }
 
     // ターンの終了判定
-    if (end == NUM || end == NUM / 2) {
+    if ( end % (NUM / 2) == 0) {
         if (WinLose() != 0) {
             return turn;
         } else {
