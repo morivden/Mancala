@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #define NUM 14
 #define STONE 3
 #define SIZE 256
 
+// ボードの宣言
 int brd[NUM];
 
+//==== ボートの初期設定関数
 void SetBoard(void) {
   int i;
 
@@ -18,41 +21,50 @@ void SetBoard(void) {
   return;
 }
 
+//==== ボードの出力関数
 void ShowBoard(void) {
   int i;
 
   printf("%d ", brd[0]);
 
+  // プレイヤ1のボード表示
   for (i = 1; i < NUM / 2; i++) {
     printf("%d ", brd[i]);
   }
 
+  // 大きい穴の表示
   printf("%d\n", brd[NUM / 2]);
   printf("%d ", brd[0]);
 
+  // プレイヤ2の表示
   for (i = NUM - 1; i > NUM / 2; i--) {
     printf("%d ", brd[i]);
   }
 
+  // 大きい穴の表示
   printf("%d\n", brd[NUM / 2]);
-
 
   return;
 }
 
+//==== 勝敗の判定関数
 int WinLose(void) {
   int s1 = 0;
   int s2 = 0;
   int i;
 
+  //== 各プレイヤの石の総計
+  // プレイヤ1
   for (i = 1; i < NUM / 2; i++) {
     s1 += brd[i];
   }
 
+  // プレイヤ2
   for (i = NUM / 2 + 1; i < NUM; i++) {
     s2 += brd[i];
   }
 
+  // 勝敗の判定と結果出力
   if (s1 == 0) {
     puts("player1 Win!");
         
@@ -66,10 +78,12 @@ int WinLose(void) {
   }
 }
 
+// 打ち手の入力関数
 int Hand(int turn) {
   char n[SIZE];
   int p;
-  
+
+  // 変数turnによって範囲を制限
   if ( turn == 1 ) {
     do {
 
@@ -91,12 +105,14 @@ int Hand(int turn) {
   return p;
 }
 
+//==== 種まきをする関数
 int Sowing(int turn) {
   int i;
   int p;
   int temp;
   int end;
 
+  // 関数Handから位置を受け取る
   p = Hand(turn);
 
   printf("%d\n", p);
@@ -117,12 +133,14 @@ int Sowing(int turn) {
     }
   }
 
+  // ターンの終了判定
   if (end == NUM || end == NUM / 2) {
     if (WinLose() != 0) {
       return turn;
     } else {
-    ShowBoard();
-    Sowing(turn);
+      // 大きい穴に入れば再帰的にSowing関数を呼び出す
+      ShowBoard();
+      Sowing(turn);
     }
   }
 
@@ -132,15 +150,18 @@ int Sowing(int turn) {
   return turn;
 }
 
+//==== ゲーム本体
 int main(void)
 {
-  int turn = 1;
+  // 変数宣言
+  int turn = 1;    // ターンの初期設定
+
   SetBoard();
 
   do {        
     turn = Sowing(turn);
     ShowBoard();
-  } while (WinLose() == 0);
+  } while (WinLose() == 0);    // 勝敗の判定
     
   return 0;
 }
